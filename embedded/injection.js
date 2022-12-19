@@ -1,8 +1,8 @@
 (() => {
   const isLocal = ['localhost', '127.0.0.1'].includes(location.hostname);
-  const isStaging = location.hostname === 'order-history-uat.surge.sh';
   const apiLink = isLocal ? 'http://localhost:50339' : 'https://api-server-a2d7o3v32a-uc.a.run.app';
-  const appId = (isLocal || isStaging) ? 'a86696f04da5479cceb6afd9081eda2c4d90ba9218e79a25bacfcace75f8fbfe' : 'REPLACE_STORE_ID_HERE';
+  const appId = document.querySelector('script[data-nim-order-history]').getAttribute('data-sitekey');
+  sessionStorage.setItem('NIM_SS_APP_ID', appId);
 
   const xmlHttpRequest = new XMLHttpRequest();
   xmlHttpRequest.onreadystatechange = function() {
@@ -19,6 +19,7 @@
 
         const mountingPoint = document.createElement('div');
         mountingPoint.setAttribute('id', mountingPointId);
+        mountingPoint.dataset.appId = appId;
         document.body.appendChild(mountingPoint);
 
         const version = responseModel.data.version;
